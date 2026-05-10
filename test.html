@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register Validation</title>
+  <style>
+    body{
+  font-family: sans-serif;
+  background: linear-gradient(135deg,#1e1e2f,#2b5876,#4e4376);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#registerForm{
+  width: 380px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 35px;
+  border-radius: 25px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  animation: show 0.5s ease;
+}
+
+@keyframes show{
+  from{
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#registerForm h2{
+  color: white;
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 30px;
+}
+
+.input-box{
+  margin-bottom: 18px;
+}
+
+input{
+  width: 100%;
+  padding: 14px;
+  border: none;
+  outline: none;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  font-size: 15px;
+  transition: 0.3s;
+  border: 2px solid transparent;
+}
+
+input::placeholder{
+  color: rgba(255,255,255,0.7);
+}
+
+input:focus{
+  border-color: #00d4ff;
+  background: rgba(255,255,255,0.2);
+  transform: scale(1.02);
+}
+
+p{
+  margin-top: 6px;
+  font-size: 13px;
+  padding-left: 5px;
+}
+
+button{
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg,#00d4ff,#0072ff);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-top: 10px;
+}
+
+button:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,114,255,0.4);
+}
+
+button:active{
+  transform: scale(0.97);
+}
+  </style>
+</head>
+<body>
+
+<form id="registerForm">
+
+  <h2>Create Account</h2>
+
+  <div class="input-box">
+    <input type="text" id="username" placeholder="Username">
+    <p id="userError"></p>
+  </div>
+
+  <div class="input-box">
+    <input type="email" id="email" placeholder="Email">
+    <p id="emailError"></p>
+  </div>
+
+  <div class="input-box">
+    <input type="password" id="password" placeholder="Password">
+    <p id="passError"></p>
+  </div>
+
+  <div class="input-box">
+    <input type="password" id="confirmPassword" placeholder="Confirm Password">
+    <p id="confirmError"></p>
+  </div>
+
+  <button type="submit">Register</button>
+    <p id="submitError"></p>
+
+</form>
+
+ <script>
+
+const form = document.getElementById("registerForm");
+
+const username = document.getElementById("username");
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const confirmPassword = document.getElementById("confirmPassword");
+
+const userError = document.getElementById("userError");
+const emailError = document.getElementById("emailError");
+const passError = document.getElementById("passError");
+const confirmError = document.getElementById("confirmError");
+const submitError = document.getElementById("submitError");
+let validuser=false;
+let validemail=false;
+let validpass=false;
+let validconfirm=false;
+let valid = false;
+// Username Validation
+username.addEventListener("input", function(){
+
+  if(username.value.trim() === ""){
+    userError.innerHTML = "Username is Empty";
+    userError.style.color = "red";
+    validuser=false;
+  }
+  else{
+    userError.innerHTML = "Valid Username";
+    userError.style.color = "green ";
+    validuser=true;
+    submitError.innerHTML = "";
+  }
+
+});
+
+
+// Email Validation
+email.addEventListener("input", function () {
+    
+    let emailValue = email.value.trim();
+    
+    let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (emailValue === "" || !emailPattern.test(emailValue)) {
+
+    emailError.innerHTML = "Email is Invalid";
+    emailError.style.color = "red";
+    validemail = false;
+    
+} else {
+    
+    emailError.innerHTML = "Valid Email";
+    emailError.style.color = "green";
+    validemail = true;
+    submitError.innerHTML = "";
+
+  }
+
+});
+// Password Validation
+password.addEventListener("input", function(){
+
+  if(password.value.trim() === ""){
+    passError.innerHTML = "Password is Empty";
+    passError.style.color = "red";
+    validpass=false;
+  }
+  else if(password.value.length < 8){
+    passError.innerHTML = "Password must be at least 8 characters";
+    passError.style.color = "red";
+    validpass=false;
+  }
+  else{
+    passError.innerHTML = "Strong Password";
+    passError.style.color = "green";
+    validpass=true;
+    submitError.innerHTML = "";
+  }
+
+});
+
+
+// Confirm Password Validation
+confirmPassword.addEventListener("input", function(){
+
+  if(confirmPassword.value !== password.value){
+    confirmError.innerHTML = "Passwords do not match";
+    confirmError.style.color = "red";
+    validconfirm=false;
+    }
+    else if(confirmPassword.value.trim() === ""){
+      confirmError.innerHTML = "Confirm Password is Empty";
+      confirmError.style.color = "red";
+      validconfirm=false;
+    }
+  else{
+    confirmError.innerHTML = "Passwords Match";
+    confirmError.style.color = "green";
+    validconfirm=true;
+    submitError.innerHTML = "";
+  }
+
+});
+
+
+form.addEventListener("submit", function(e){
+
+  e.preventDefault();
+
+  if(validuser && validemail && validpass && validconfirm){
+      alert("Register Success");
+      submitError.innerHTML = "";
+        form.reset();
+        emailError.innerHTML = "";
+        userError.innerHTML = "";
+        passError.innerHTML = "";
+        confirmError.innerHTML = "";
+        
+  }else{
+    submitError.innerHTML = "Please check the data you entered";
+    submitError.style.color = "red";
+  }
+
+});
+
+</script>
+</body>
+</html>
